@@ -562,7 +562,7 @@ A workspace can give each package its own `tsdoc.json` — its own custom tags, 
 
 ```text
 root/
-├── tsdoc.json              # defines @internal-only
+├── tsdoc.json              # defines @internalOnly
 └── packages/
     ├── api/
     │   ├── tsdoc.json       # defines @endpoint, on top of the root's tags
@@ -674,6 +674,18 @@ npm run format  # prettier --write .
 ```
 
 The CLI dogfoods the tooling it ships: it is documented with TSDoc, linted with `eslint-plugin-tsdoc` + `eslint-plugin-tsdoc-require-2` at `error`, and gated by its own `check` command (`npm run check:tsdoc`).
+
+### Docs site
+
+The `docs/` folder is published as an educational site (`site/`), built with the docsite CLI. It has three sections: **Docs** (`docs/*.md`, one page per command plus the concepts and the CLI reference), **Examples** (`docs/examples/`, before and after taken from real runs) and **Tutorials** (`docs/tutorials/`, guided walkthroughs). It has its own `package.json`, so `npm install` at the root does not install it, and the CLI is not a dependency of it either: the `site/` scripts run it through `npx` at the release pinned in `site/.docsite.json`, which `npx @silverassist/docsite@latest upgrade` moves. The CLI lives in GitHub Packages, so running the site needs a token with `read:packages` in `NPM_GITHUB_TOKEN`; nothing else in this repo does.
+
+```bash
+cd site && npm install
+npm run dev                              # extracts the docs and serves them
+npm run build && npm run check:publish   # what CI runs
+```
+
+The build prerenders every page (`dist/<page>/index.html`), so a deep link is served with a 200, its own title and its content in the HTML, and `dist/404.html` is the app shell for any other address. Edit the Markdown in `docs/`, never `site/src/content/generated.json`: it is regenerated on every build. Every command, output and diff shown there comes from running the CLI, so re-run it when a behaviour changes. Give a page an `order` in its frontmatter to place it in the menu. `AGENTS.md` is not published. The `docs site builds` CI job is skipped on pull requests from forks, which get no secrets, and `deploy-site.yml` publishes to GitHub Pages on `main` (the repository's Pages source must be "GitHub Actions"). The docsite skills and prompts sit under `.agents/`, `.github/` and `.claude/`, and `/docsite-audit` checks the site against the kit. The checks above exclude `site/`, which is its own project.
 
 ### Git hooks
 

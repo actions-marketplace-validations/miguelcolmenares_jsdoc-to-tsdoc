@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **An educational documentation site** built from `docs/` with the docsite CLI, in `site/` with its own dependencies. It has three sections: Docs (a page per command, the JSDoc vs TSDoc concepts, the CLI reference and CI integration), Examples (before and after taken from real runs) and Tutorials (guided walkthroughs of the migration, the stubs, the CI gate and `escalate`). The CLI is run through `npx` at the release pinned in `site/.docsite.json`, not installed as a dependency. CI builds it and runs the publish check (skipped for pull requests from forks, which get no secrets), and `deploy-site.yml` publishes it to GitHub Pages. `AGENTS.md` is excluded from it. Needs an `NPM_GITHUB_TOKEN` secret with `read:packages`, because the package is in GitHub Packages.
+- The docs site prerenders every page, so a deep link is served with a 200, its own `<title>` and description, and its content in the HTML, and the footer links to the contributing guide, the license and the issue tracker. `deploy-site.yml` no longer copies `index.html` to `404.html`, since the build writes the 404 page.
+- The docsite agent kit (skills, the `/docsite-new` and `/docsite-audit` prompts and an instruction), installed with `docsite agents`.
+
+### Changed
+
+- The CLI's own `check`, ESLint, Prettier and the CI-integration workflow exclude `site/`, which is its own project.
+
 ## [1.0.0] - 2026-09-09
 
 First stable release. Everything below accumulated since 0.2.1 as the `[Unreleased]` backlog `AGENTS.md` describes as deliberately deferred — held until there was enough of it to call a stable line.
