@@ -21,7 +21,7 @@ jobs:
     name: GitHub Action (uses ./)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.1
 
       - name: Run the action against this repo's own src/
         id: check
@@ -60,7 +60,7 @@ jobs:
     name: Bitbucket Pipe (docker build + smoke run)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.1
 
       - name: Build the pipe image
         run: docker build -t jsdoc-to-tsdoc-pipe:ci pipe/
