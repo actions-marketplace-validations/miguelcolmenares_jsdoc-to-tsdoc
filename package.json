@@ -72,7 +72,7 @@
   },
   "dependencies": {
     "@clack/prompts": "^1.7.0",
-    "@microsoft/tsdoc": "^0.16.0",
+    "@microsoft/tsdoc": "^0.17.1",
     "@microsoft/tsdoc-config": "^0.18.1",
     "citty": "^0.2.2",
     "diff": "^9.0.0",
